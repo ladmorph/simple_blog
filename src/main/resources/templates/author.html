@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Мой профиль</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Raccoon</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
+            aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <div th:if="${author != null}">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="'/author/' + ${author.id}">Мой профиль</a>
+                </li>
+            </div>
+            <li class="nav-item" th:if="${admin}">
+                <a class="nav-link" href="/admin">Список пользователей</a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <div th:if="${author != null}">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                    <a href="/logout">Выйти</a>
+                </button>
+            </div>
+
+            <div th:if="${author == null}">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                    <a href="/login">Войти</a>
+                </button>
+            </div>
+        </form>
+    </div>
+</nav>
+
+<div th:if="${authorUnknown}">
+    <span>Пользователь не найден!</span>
+</div>
+
+<div th:unless="${authorUnknown}">
+
+    <div class="form-group">
+        <label for="username">Мое имя:</label>
+        <input class="form-control" id="username" type="text" name="username" th:value="${author.username}" required/>
+    </div>
+    <span th:text="${'Дата регистрации: ' + author.regDate}"/>
+    <div th:each="role : ${author.roles}">
+        <span th:text="${role.name()}"/>
+    </div>
+</div>
+</body>
+</html>
